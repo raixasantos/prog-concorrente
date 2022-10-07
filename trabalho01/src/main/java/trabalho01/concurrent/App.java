@@ -22,12 +22,12 @@ public class App {
                     threads.add(thread);
                     thread.start();
                 }
+                for (Thread thread : threads) {
+                    thread.join();
+                }
+                long elapsed = System.currentTimeMillis() - start;
+                File.writeResult(type, scenarios[scenario], elapsed);
             }
-            for (Thread thread : threads) {
-                thread.join();
-            }
-            long elapsed = System.currentTimeMillis() - start;
-            File.writeResult(type, scenarios[scenario], elapsed);
         }
     }
 }
