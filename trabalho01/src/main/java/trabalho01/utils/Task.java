@@ -10,6 +10,14 @@ public class Task {
     public Task() {
     }
 
+    
+    /** 
+     * Execute a request to WikiHow API, treat the response and print a output.
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void run() throws JsonMappingException, JsonProcessingException, IOException, InterruptedException {
         ApiService apiService = new ApiService();
         String response = apiService.sendRequest();

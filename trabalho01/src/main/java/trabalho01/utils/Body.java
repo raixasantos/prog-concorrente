@@ -12,14 +12,31 @@ public class Body {
     @JsonProperty("1")
     private String phrase;
 
+    
+    /** 
+     * @return String A phrase received from response.
+     */
     public String getPhrase() {
         return phrase;
     }
 
+    
+    /** 
+     * Phrase is a represention of a field in WikiHow API's json.
+     * @param phrase
+     */
     public void setPhrase(String phrase) {
         this.phrase = phrase;
     }
 
+    
+    /** 
+     * Treat a response received from some request.
+     * @param response
+     * @return Body
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     */
     public Body treatResponse(String response) throws JsonMappingException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Body body = mapper.readValue(response, Body.class);

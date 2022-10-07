@@ -11,14 +11,17 @@ public class ApiService {
     public ApiService() {
     }
 
-    /**
+    
+    /** 
+     * Set and send a request to the WikiHow API.
+     * @return String Response received from a request.
      * @throws IOException
      * @throws InterruptedException
      */
     public String sendRequest() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://hargrimm-wikihow-v1.p.rapidapi.com/steps?count=3"))
-                .header("X-RapidAPI-Key", "e281c2c24amshb3a0c2492055b71p1db055jsn0786effb0a43")
+                .header("X-RapidAPI-Key", "623cb9e05emsh977145c8dd3e439p18de75jsnfb32eaf9e6fa")
                 .header("X-RapidAPI-Host", "hargrimm-wikihow-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
