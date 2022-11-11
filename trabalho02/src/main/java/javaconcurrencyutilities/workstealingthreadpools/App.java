@@ -1,4 +1,4 @@
-package javaconcurrencyutilities.workstealingthreadpools;
+package javaconcurrencyutilities.Workstealingthreadpools;
 
 /**
  * Hello world!

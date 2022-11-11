@@ -1,4 +1,4 @@
-package javaconcurrencyutilities.cached;
+package javaconcurrencyutilities.Cached;
 
 /**
  * Hello world!
