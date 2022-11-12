@@ -16,19 +16,19 @@ As ferramentas utilizadas foram:
 
 Para execução deve ser fornecida como entrada, em todas as versões do programa, *fixed*, *cached* e *workstealing*, o número de termos que determina a aproximação a ser calculada. No programa *fixed* também é necessário fornecer como entrada um número predefinido de threads a serem utilizadas.
 
-1. Para compilar as classes em Java:
+1. Para compilar as classes em Java, execute o seguinte comando no console:
 
 ```bash
 javac trabalho02/src/nome-da-versao/Main.java
 ```
 
-2. Para realizar a execução no console, utilize os seguintes comandos na versão *fixed*:
+2. Para realizar a execução no console, utilize o seguinte comando na versão *fixed*:
 
 ```bash
 java trabalho02/src/nome-da-versao/Main <numero-de-termos> <numero-de-threads>
 ```
 
-Ou utilize os seguintes comandos nas versões *cached* e *workstealing*:
+3. Para as versões *cached* e *workstealing*, utilize o seguinte comando:
 
 ```bash
 java trabalho02/src/nome-da-versao/Main <numero-de-termos>
