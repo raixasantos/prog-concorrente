@@ -1,4 +1,4 @@
-package javaconcurrencyutilities.NumbereCalculator;
+package trabalho02.src.numberecalculator;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

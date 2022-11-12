@@ -1,5 +1,4 @@
-package javaconcurrencyutilities.NumbereCalculator;
-
+package trabalho02.src.numberecalculator;
 import java.math.BigDecimal;
 import java.util.concurrent.Callable;
 
@@ -38,5 +37,3 @@ public class Factorial implements Callable<BigDecimal> {
 		}
 	}
 }
-
-
