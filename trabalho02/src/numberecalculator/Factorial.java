@@ -1,5 +1,7 @@
 package trabalho02.src.numberecalculator;
+
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.concurrent.Callable;
 
 
@@ -16,11 +18,13 @@ public class Factorial implements Callable<BigDecimal> {
 
 	/**
 	 * Task to run upon a thread
-	 * @return Factorial of a given number
+	 * @return Number with 1 divided by factorial of a given number
 	 */
 	@Override
 	public BigDecimal call() {
-		return factorial(this.number);
+		BigDecimal value = new BigDecimal(1);
+		BigDecimal factorial = factorial(this.number);
+		return value.divide(factorial, MathContext.DECIMAL128);
 	}
 
 	/**
