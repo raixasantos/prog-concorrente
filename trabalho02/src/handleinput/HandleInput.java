@@ -4,11 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HandleInput {
-    public static List<Integer> handleArgsInput(String[] args) {
-        List<Integer> params = new ArrayList<Integer>();
-        for (int i = 0; i < args.length; i++) {
-            System.out.println(args[i]);
+    public static int[] handleArgsInput(String[] args) {
+        int[] params = new int[] { 0, 0 };
+        if (args.length == 0) {
+            return new int[] {100, 50};
         }
+
+        for (int i = 0; i < args.length; i++) {
+            if (i == 1) break;
+            try {
+                params[i] = Integer.parseInt(args[i]);
+            }
+            catch (NumberFormatException e) {
+                params[i] = 0;
+            }
+        }
+
         return params;
     }
 }
