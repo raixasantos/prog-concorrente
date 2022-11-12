@@ -14,9 +14,6 @@ import trabalho02.src.numberecalculator.*;
 
 public final class Main {
     
-	/** Number of numerical terms to execute */ 
-	private static final int NUM_TERMS = 100;
-    
     /**
      * Calculate the Euler's number with Cached Thread Pool.
      * @param args The arguments of the program.
@@ -24,20 +21,14 @@ public final class Main {
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        HandleInput.handleArgsInput(args);
-
-        final ThreadGroup threadGroup = new ThreadGroup("threads");
+        int num_terms = HandleInput.handleArgsInput(args)[0];
 
         ExecutorService executor =
-            Executors.newCachedThreadPool(new ThreadFactory() {
-                public Thread newThread(Runnable runnable) {
-                    return new Thread(threadGroup, runnable);
-                }
-            });
+            Executors.newCachedThreadPool();
 
         List<Future<BigDecimal>> results = new ArrayList<>();
     
-        for (int i = 0; i < NUM_TERMS; i++) {
+        for (int i = 0; i < num_terms; i++) {
             Callable<BigDecimal> term = new Factorial(new BigDecimal(i));
             Future<BigDecimal> factorial = executor.submit(term);
             results.add(factorial);
@@ -50,7 +41,7 @@ public final class Main {
                sum = numbereCalculator.sumFactorial(result.get(), sum);
             }
             System.out.println("Euler's number: " + sum.toString());
-            System.out.println("Number of threads used: " + threadGroup.activeCount());
+            System.out.println("Number of threads used: " + Thread.activeCount());
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		} finally {
