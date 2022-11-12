@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.lang.Thread;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,7 +44,7 @@ public final class Main {
                sum = numbereCalculator.sumFactorial(result.get(), sum);
             }
             System.out.println("Euler's number: " + sum.toString());
-            System.out.println("Number of threads used: ");
+            System.out.println("Number of threads used: " +  Thread.activeCount());
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		} finally {
