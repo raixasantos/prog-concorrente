@@ -12,20 +12,36 @@ public class HandleInput {
      */
     public static int[] handleArgsInput(String[] args) {
         int[] params = new int[] { 0, 0 };
-        if (args.length == 0) {
-            return new int[] {100, 50};
+        if (args.length == 0 || args.length == 1) {
+            printAndExit("Arguments: number of numerical terms and number of threads to execute required!");
         }
 
         for (int i = 0; i < args.length; i++) {
-            if (i == 2) break;
+            if (i == 2) {
+                printAndExit("Too many arguments!");
+            }
+
             try {
+                if (Integer.parseInt(args[i]) <= 0) {
+                    printAndExit("Plese, enter a number greater than zero!");
+                }
                 params[i] = Integer.parseInt(args[i]);
             }
             catch (NumberFormatException e) {
-                params[i] = 0;
+                printAndExit("Invalid arguments!");
             }
         }
 
         return params;
+    }
+
+    
+    /** 
+     * Print error message and exit program.
+     * @param message Message to print.
+     */
+    private static void printAndExit(String message) {
+        System.out.println(message);
+        System.exit(-1);
     }
 }
