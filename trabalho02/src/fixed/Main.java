@@ -13,11 +13,6 @@ import trabalho02.src.numberecalculator.*;
 
 public final class Main {
 
-    private static final int NUM_THREADS = 50;
-
-	/** Number of numerical terms to execute */ 
-	private static final int NUM_TERMS = 100;
-
     /**
      * Calculate the Euler's number with Fixed Thread Pool.
      * @param args The arguments of the program.
@@ -25,15 +20,15 @@ public final class Main {
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        HandleInput.handleArgsInput(args);
-
+        int[] input = HandleInput.handleArgsInput(args);
+        int num_terms = input[0], num_threads = input[1];
         
         ExecutorService executor =
-            Executors.newFixedThreadPool(NUM_THREADS);
+            Executors.newFixedThreadPool(num_threads);
 
         List<Future<BigDecimal>> results = new ArrayList<>();
     
-        for (int i = 0; i < NUM_TERMS; i++) {
+        for (int i = 0; i < num_terms; i++) {
             Callable<BigDecimal> term = new Factorial(new BigDecimal(i));
             Future<BigDecimal> factorial = executor.submit(term);
             results.add(factorial);
@@ -46,7 +41,7 @@ public final class Main {
                sum = numbereCalculator.sumFactorial(result.get(), sum);
             }
             System.out.println("Euler's number: " + sum.toString());
-            System.out.println("Number of threads used: " + NUM_THREADS);
+            System.out.println("Number of threads used: " + num_threads);
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		} finally {
