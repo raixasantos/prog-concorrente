@@ -1,17 +1,53 @@
 package javaconcurrencyutilities.Workstealingthreadpools;
 
-/**
- * Hello world!
- */
-public final class App {
-    private App() {
-    }
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import javaconcurrencyutilities.NumbereCalculator.Factorial;
+import javaconcurrencyutilities.NumbereCalculator.NumbereCalculator;
+
+public final class App {
+    
+	/** Number of numerical terms to execute */ 
+	private static final int NUM_TERMS = 100;
+    
     /**
-     * Says hello to the world.
+     * Calculate the Euler's number with Work Stealing Thread Pool.
      * @param args The arguments of the program.
+     * @throws ExecutionException
+     * @throws InterruptedException
      */
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+
+        ExecutorService executor =
+            Executors.newWorkStealingPool();
+
+        List<Future<BigDecimal>> results = new ArrayList<>();
+    
+        for (int i = 0; i < NUM_TERMS; i++) {
+            Callable<BigDecimal> term = new Factorial(new BigDecimal(i));
+            Future<BigDecimal> factorial = executor.submit(term);
+            results.add(factorial);
+        }
+        
+        try {
+            NumbereCalculator numbereCalculator = new NumbereCalculator();
+            BigDecimal sum = new BigDecimal(0);
+            for(Future<BigDecimal> result : results){
+               sum = numbereCalculator.sumFactorial(result.get(), sum);
+            }
+            System.out.println("Number of threads used: ");
+            System.out.print("Euler's number: " + sum.toString());
+		} catch (ExecutionException | InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			executor.shutdown();
+		}
     }
 }
