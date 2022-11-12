@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javaconcurrencyutilities.HandleInput.HandleInput;
 import javaconcurrencyutilities.NumbereCalculator.Factorial;
 import javaconcurrencyutilities.NumbereCalculator.NumbereCalculator;
 
@@ -26,6 +27,9 @@ public final class App {
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException, ExecutionException {
+        HandleInput.handleArgsInput(args);
+
+        
         ExecutorService executor =
             Executors.newFixedThreadPool(NUM_THREADS);
 
@@ -43,7 +47,8 @@ public final class App {
             for(Future<BigDecimal> result : results){
                sum = numbereCalculator.sumFactorial(result.get(), sum);
             }
-            System.out.print("Euler's number: " + sum.toString());
+            System.out.println("Euler's number: " + sum.toString());
+            System.out.println("Number of threads used: " + NUM_THREADS);
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		} finally {
