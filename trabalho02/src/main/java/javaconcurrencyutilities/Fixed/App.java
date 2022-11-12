@@ -9,43 +9,41 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javaconcurrencyutilities.NumbereCalculator.Factorial;
 import javaconcurrencyutilities.NumbereCalculator.NumbereCalculator;
 
-/**
- * Hello world!
- */
 public final class App {
 
     private static final int NUM_THREADS = 50;
 
-	/** Number of tasks to execute */
-	private static final int NUM_TASKS = 100;
+	/** Number of numerical terms to execute */ 
+	private static final int NUM_TERMS = 100;
 
     /**
-     * Says hello to the world.
+     * Calculate the Euler's number with Fixed Thread Pool.
      * @param args The arguments of the program.
      * @throws ExecutionException
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         ExecutorService executor =
-        Executors.newFixedThreadPool(NUM_THREADS);
+            Executors.newFixedThreadPool(NUM_THREADS);
 
         List<Future<BigDecimal>> results = new ArrayList<>();
     
-        for (int i = 0; i < NUM_TASKS; i++) {
-            Callable<BigDecimal> task = new NumbereCalculator(new BigDecimal(i));
-            Future<BigDecimal> factorial = executor.submit(task);
+        for (int i = 0; i < NUM_TERMS; i++) {
+            Callable<BigDecimal> term = new Factorial(new BigDecimal(i));
+            Future<BigDecimal> factorial = executor.submit(term);
             results.add(factorial);
         }
         
-        
         try {
+            NumbereCalculator numbereCalculator = new NumbereCalculator();
             BigDecimal sum = new BigDecimal(0);
             for(Future<BigDecimal> result : results){
-                sum.add(result.get());
+               sum = numbereCalculator.sumFactorial(result.get(), sum);
             }
-            System.out.print("Euler's number: " + sum);
+            System.out.print("Euler's number: " + sum.toString());
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		} finally {
