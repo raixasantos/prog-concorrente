@@ -7,82 +7,55 @@ public class Bathroom {
     	
 	private int capacity;
 
-	private Queue<Person> bathroom;
+	private Queue<Person> peopleInBathroom;
 
-	private char currentGender = 'N';
-	private Queue<Person> queue;
+	// private char currentGender = 'N';
+	private Queue<Person> waitingQueue;
 
 
 	public Bathroom(int capacity) {
 		this.capacity = capacity;
-		bathroom = new LinkedList<Person>();
+		peopleInBathroom = new LinkedList<>();
 	}
 
 
 	public synchronized void insert(Person person) {
-		while (bathroom.size() == capacity) {
+		System.out.println("Tentando entrar no banheiro. id " + person.getId());
+		while (peopleInBathroom.size() == capacity) {
+			System.out.println("Banheiro cheio! Ids: ");
+			for (Person per : peopleInBathroom) {
+				System.out.print(per.getId() + " ");
+			}
 			try {
 				wait();
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 		}
-		System.out.println("Vai entrar no banheiro o gênero: " + person.getGender());
-		// TODO: adicionar condição de qual gênero entra
-		//se o banheiro está cheio de mulheres e uma mulher quer entrar, vai pra fila?
-		if(bathroom.size() == 0 && currentGender == 'N') {
-			bathroom.add(person);
-			currentGender = person.getGender();
-		}
-		else if(bathroom.size() == 0 && (currentGender == 'F' || currentGender == 'N') && queue.peek().getGender() == 'F' ){
-			bathroom.add(person);
-			currentGender = queue.peek().getGender();
-			queue.poll();
-		}
-		else if(bathroom.size() == 0 && (currentGender == 'M' || currentGender == 'N') && queue.peek().getGender() == 'M' ){
-			bathroom.add(person);
-			currentGender = queue.peek().getGender();
-			queue.poll();
-		}
-		else if(bathroom.size() < 5 && (currentGender == 'F' || currentGender == 'N') && queue.peek().getGender() == 'F' ){
-			bathroom.add(person);
-			currentGender = queue.peek().getGender();
-			queue.poll();
-		}
-		else if(bathroom.size() < 5 && (currentGender == 'M' || currentGender == 'N') && queue.peek().getGender() == 'M' ){
-			bathroom.add(person);
-			currentGender = queue.peek().getGender();
-			queue.poll();
-		}
-		else if(bathroom.size() < 5 && currentGender == 'F' && person.getGender() == 'F'){
-			bathroom.add(person);
-			currentGender = person.getGender();
-		}
-		else if(bathroom.size() < 5 && currentGender == 'M' && person.getGender() == 'M'){
-			bathroom.add(person);
-			currentGender = person.getGender();
-		}
-		else {
-			queue.add(person);
-		}
-		System.out.println("Entrou no banheiro: " + person.getId() + ". Qtd no banheiro: " + bathroom.size());
-		notify();
+		System.out.println("Vai entrar no banheiro o gênero: " + person.getGender() + " id " + person.getId());
+		peopleInBathroom.add(person);
+		System.out.println("Entrou no banheiro: " + person.getId() + ". Qtd no banheiro: " + peopleInBathroom.size());
+		// notifyAll();
 	}
 
-	
 	public synchronized void remove(Person person) {
-		while (bathroom.size() == 0) {
+		System.out.println("Tentando sair do banheiro. id " + person.getId());
+		/* 
+		while (peopleInBathroom.isEmpty()) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
-		}
-		
-		Boolean personRemoved = bathroom.remove(person);
-        if(personRemoved == true){
-            System.out.println("Saiu do banheiro " + person.getId() + " do gênero " + person.getGender() + ". Qtd no banheiro: " + bathroom.size());
+		}		
+		*/
+		Boolean personRemoved = peopleInBathroom.remove(person);
+        if(Boolean.TRUE.equals(personRemoved)){
+            System.out.println("Saiu do banheiro " + person.getId() + " do gênero " + person.getGender() + ". Qtd no banheiro: " + peopleInBathroom.size());
         }
-		notify();
+		// notifyAll();
 	}
 }

@@ -11,12 +11,6 @@ public class Consumer extends Thread {
 
     @Override
     public void run() {
-        try {
-            sleep(person.getTime());
-            bathroom.remove(person);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        // bathroom.remove(person);
     }
 }

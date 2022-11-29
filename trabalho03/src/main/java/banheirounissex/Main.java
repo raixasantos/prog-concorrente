@@ -30,11 +30,11 @@ public class Main
         for (int i = 0; i < NUM_THREADS; i++) {
             int randomInt = random.nextInt(setOfCharacters.length());
             char randomGender = setOfCharacters.charAt(randomInt);
-            int randomTime = random.nextInt(120000);
+            int randomTime = random.nextInt(120);
             Person person = new Person();
             person.setId(i);
             person.setGender(randomGender);
-            person.setTime(randomTime);
+            person.setTime(Long.valueOf(randomTime));
             persons[i] = person;
         }
 
@@ -55,6 +55,7 @@ public class Main
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 	}
 }

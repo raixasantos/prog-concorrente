@@ -12,5 +12,12 @@ public class Producer extends Thread {
     @Override
     public void run() {
         bathroom.insert(person);
+        try {
+			Thread.sleep(person.getTime());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Thread.currentThread().interrupt();
+		}
+        bathroom.remove(person);
     }    
 }
