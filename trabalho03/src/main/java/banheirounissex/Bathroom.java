@@ -26,7 +26,7 @@ public class Bathroom {
 			currentGender = waitingList.peek().getGender();
 			Person headPerson = waitingList.poll();
 			peopleInBathroom.add(headPerson);
-			
+
 			System.out.println("Banheiro vazio. gênero: " + person.getGender() + " id: " + person.getId());
 			System.out.println("Começou a usar o banheiro. gênero: " + person.getGender() + " id: " + person.getId()
 				+ ". Qtd no banheiro: " + peopleInBathroom.size());
@@ -34,7 +34,7 @@ public class Bathroom {
 		else {
 			if(peopleInBathroom.size() < capacity && currentGender == person.getGender()) {
 				System.out.println("Genero atual: " + currentGender + " Genero de quem entrou: " + waitingList.peek().getGender());
-				Person headPerson = waitingList.poll();
+				Person headPerson = waitingList.poll(); // trocar para remover a pessoa em especifíco
 				peopleInBathroom.add(headPerson);
 				System.out.println("Começou a usar o banheiro. gênero: " + person.getGender() + " id: " + person.getId()
 					+ ". Qtd no banheiro: " + peopleInBathroom.size());	
