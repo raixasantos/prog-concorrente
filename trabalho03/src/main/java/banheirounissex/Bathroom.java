@@ -1,26 +1,46 @@
 package banheirounissex;
 
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class Bathroom {
     	
 	private int capacity;
+	private LinkedList<Person> peopleInBathroom;
 
-	private Queue<Person> peopleInBathroom;
-
-	// private char currentGender = 'N';
-	private Queue<Person> waitingQueue;
+	private char currentGender = 'N';
+	private LinkedList<Person> waitingList;
 
 
 	public Bathroom(int capacity) {
 		this.capacity = capacity;
+		waitingList = new LinkedList<>();
 		peopleInBathroom = new LinkedList<>();
 	}
 
 
 	public synchronized void insert(Person person) {
-		System.out.println("Tentando entrar no banheiro. id " + person.getId());
+		System.out.println("Vai entrar na fila do banheiro. gênero: " + person.getGender() + " id: " + person.getId());
+		waitingList.add(person);
+
+		if(peopleInBathroom.isEmpty()) {
+			currentGender = waitingList.peek().getGender();
+			Person headPerson = waitingList.poll();
+			peopleInBathroom.add(headPerson);
+			
+			System.out.println("Banheiro vazio. gênero: " + person.getGender() + " id: " + person.getId());
+			System.out.println("Começou a usar o banheiro. gênero: " + person.getGender() + " id: " + person.getId()
+				+ ". Qtd no banheiro: " + peopleInBathroom.size());
+		}
+		else {
+			if(peopleInBathroom.size() < capacity && currentGender == person.getGender()) {
+				System.out.println("Genero atual: " + currentGender + " Genero de quem entrou: " + waitingList.peek().getGender());
+				Person headPerson = waitingList.poll();
+				peopleInBathroom.add(headPerson);
+				System.out.println("Começou a usar o banheiro. gênero: " + person.getGender() + " id: " + person.getId()
+					+ ". Qtd no banheiro: " + peopleInBathroom.size());	
+			}
+		}
+
 		while (peopleInBathroom.size() == capacity) {
 			System.out.println("Banheiro cheio! Ids: ");
 			for (Person per : peopleInBathroom) {
@@ -34,10 +54,8 @@ public class Bathroom {
 				Thread.currentThread().interrupt();
 			}
 		}
-		System.out.println("Vai entrar no banheiro o gênero: " + person.getGender() + " id " + person.getId());
-		peopleInBathroom.add(person);
-		System.out.println("Entrou no banheiro: " + person.getId() + ". Qtd no banheiro: " + peopleInBathroom.size());
-		// notifyAll();
+			
+		notify();
 	}
 
 	public synchronized void remove(Person person) {
@@ -54,8 +72,11 @@ public class Bathroom {
 		*/
 		Boolean personRemoved = peopleInBathroom.remove(person);
         if(Boolean.TRUE.equals(personRemoved)){
-            System.out.println("Saiu do banheiro " + person.getId() + " do gênero " + person.getGender() + ". Qtd no banheiro: " + peopleInBathroom.size());
+            System.out.println("Saiu do banheiro " + person.getId() 
+				+ " do gênero " + person.getGender() 
+				+ ". Qtd no banheiro: " + peopleInBathroom.size());
         }
-		// notifyAll();
+		notify();
+		// return;
 	}
 }

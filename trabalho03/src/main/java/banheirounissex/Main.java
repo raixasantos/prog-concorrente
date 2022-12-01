@@ -23,7 +23,6 @@ public class Main
         
         Person[] persons = new Person[NUM_THREADS];
 		Producer[] producers = new Producer[NUM_THREADS];
-		Consumer[] consumers = new Consumer[NUM_THREADS];
 
         String setOfCharacters = "FM";
         Random random = new Random();
@@ -40,18 +39,15 @@ public class Main
 
 		for (int i = 0; i < NUM_THREADS; i++) {
 			producers[i] = new Producer(persons[i], bathroom);
-			consumers[i] = new Consumer(persons[i], bathroom);
 		}
 		
 		for (int i = 0; i < NUM_THREADS; i++) {
 			producers[i].start();
-			consumers[i].start();
 		}
 		
 		try {
 			for (int i = 0; i < NUM_THREADS; i++) {
 				producers[i].join();
-				consumers[i].join();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
