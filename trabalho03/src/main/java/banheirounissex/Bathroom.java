@@ -7,35 +7,26 @@ public class Bathroom {
     	
 	private int capacity;
 	private List<Person> peopleInBathroom;
-
 	private char currentGender = 'N';
 
-
+	/**
+	 * Parameterized constructor
+	 * @param capacity Bathroom limit capacity
+	 */
 	public Bathroom(int capacity) {
 		this.capacity = capacity;
 		peopleInBathroom = new ArrayList<>();
 	}
 
-
+	/**
+	 * Add people in the bathroom
+	 * @param person Person who wants to use the bathroom
+	 */
 	public synchronized void enter(Person person) {
-		System.out.println("Quer entrar no banheiro. gênero: " + person.getGender() + " id: " + person.getId());
+		System.out.println("Pessoa " + person.getId() + 
+			"(" + person.getGender() + ") quer entrar no banheiro.");
 
-		while (peopleInBathroom.size() == capacity) {
-			System.out.println("Banheiro cheio! Ids:");
-			for (Person per : peopleInBathroom) {
-				System.out.print(" " + per.getId() + "  gênero: " + person.getGender());
-			}
-			try {
-				wait();
-
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				Thread.currentThread().interrupt();
-			}
-		}
-
-		while (currentGender != person.getGender() && currentGender != 'N') {
-			System.out.println("Não posso entrar, gen: " + person.getGender() + " genero atual: " + currentGender);
+		while (peopleInBathroom.size() == capacity || (currentGender != person.getGender() && currentGender != 'N')) {
 			try {
 				wait();
 
@@ -49,18 +40,28 @@ public class Bathroom {
 		if(currentGender == 'N') {
 			currentGender = person.getGender();
 		}
-		System.out.println("Começou a usar o banheiro. gênero: " + person.getGender() + " id: " + person.getId()
-				+ ". Qtd no banheiro: " + peopleInBathroom.size());
+		System.out.println("Pessoa " + person.getId() + 
+			"(" + person.getGender() + ") começou a usar o banheiro." +
+			" Qtd de pessoas no banheiro: " + peopleInBathroom.size());
+		
 		notify();
 	}
+	
 
+	/**
+	 * Remove people from the bathroom
+	 * @param person Person who wants to leave the bathroom
+	 */
 	public synchronized void leave(Person person) {
-		System.out.println("Tentando sair do banheiro. id " + person.getId());
+		System.out.println("Pessoa " + person.getId() + 
+			"(" + person.getGender() + ") tentando sair do banheiro.");
 		Boolean personRemoved = peopleInBathroom.remove(person);
         if(Boolean.TRUE.equals(personRemoved)){
-            System.out.println("Saiu do banheiro " + person.getId() 
-				+ " do gênero " + person.getGender() 
-				+ ". Qtd no banheiro: " + peopleInBathroom.size());
+            
+			System.out.println("Pessoa " + person.getId() + 
+				"(" + person.getGender() + ") saiu do banheiro" + 
+				". Qtd no banheiro: " + peopleInBathroom.size());
+
         }
 		if(peopleInBathroom.isEmpty()) {
 			currentGender = 'N';

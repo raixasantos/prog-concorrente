@@ -1,6 +1,7 @@
 package banheirounissex;
 
 public class Person {
+
     private Integer id;
     private char gender;
     private Long time;
@@ -9,6 +10,12 @@ public class Person {
 
     }
 
+    /**
+	 * Parameterized constructor
+	 * @param id Person id
+     * @param gender Person's gender
+     * @param time How long will the person stay in the bathroom
+	 */
     public Person(Integer id, char gender, Long time) {
         this.id = id;
         this.gender = gender;
