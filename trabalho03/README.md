@@ -8,16 +8,11 @@ Repositório destinado para as implementações utilizadas no estudo sobre progr
 As ferramentas utilizadas foram: 
 
 - Java 11.0.16
+- Maven
 
 ## Execução
 
-Para execução deve ser fornecida como entrada...
-
-1. Para compilar as classes em Java, execute o seguinte comando no console:
-
-```bash
-javac trabalho03/src/Main.java
-```
+Para compilar e executar o projeto, selecione o botão "Run" presente na sua IDE.
 
 ## Desenvolvedoras
 - [Neylane Lopes](https://github.com/neylanepl) 

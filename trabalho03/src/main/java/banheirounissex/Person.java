@@ -1,15 +1,22 @@
 package banheirounissex;
 
 public class Person {
+
     private Integer id;
     private char gender;
-    private Integer time;
+    private Long time;
 
     public Person() {
 
     }
 
-    public Person(Integer id, char gender, Integer time) {
+    /**
+	 * Parameterized constructor
+	 * @param id Person id
+     * @param gender Person's gender
+     * @param time How long will the person stay in the bathroom
+	 */
+    public Person(Integer id, char gender, Long time) {
         this.id = id;
         this.gender = gender;
         this.time = time;
@@ -31,11 +38,11 @@ public class Person {
         this.gender = gender;
     }
 
-    public Integer getTime() {
+    public Long getTime() {
         return this.time;
     }
 
-    public void setTime(Integer time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
