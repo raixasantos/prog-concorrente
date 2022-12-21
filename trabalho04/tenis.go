@@ -31,27 +31,42 @@ func NewPlayer(id, points int) *Player {
 }
 
 var bestPlayer Player
+var pointSet int = 7
 
 func updateWinner(player Player) {
 	if player.points > bestPlayer.points {
 		bestPlayer.id = player.id
 		bestPlayer.points = player.points
 	}
+	fmt.Println("Updating best player:", bestPlayer.id, " Points:", bestPlayer.points)
+}
+
+func gameover() bool {
+	return bestPlayer.points == pointSet
 }
 
 func move(player Player, court chan bool, waitGroup *sync.WaitGroup) {
-	for bestPlayer.points < 7 {
+	for true {
 		status := <-court
-		if !status {
+		if !status { // não entra
+			fmt.Println("Status in exception: ", status)
 			return
 		}
-		fmt.Println(status)
-		fmt.Println("Starting move")
+
+		fmt.Println("Status: ", status)
+		fmt.Println("Player", player.id, "starting move")
 		if makePoint() == 1 {
 			player.points++
 			fmt.Println("Player", player.id, "Points: ", player.points)
+		} else {
+			fmt.Println("Player", player.id, "no point")
 		}
 		updateWinner(player)
+
+		if gameover() { // não entra
+			fmt.Println("Closing the court channel...")
+			close(court)
+		}
 		court <- true
 	}
 
@@ -65,7 +80,7 @@ func main() {
 	player02 := NewPlayer(2, 0)
 
 	waitGroup.Add(2)
-	fmt.Println("Starting")
+	fmt.Println("Starting game")
 	go move(*player01, court, &waitGroup)
 	go move(*player02, court, &waitGroup)
 	court <- true
