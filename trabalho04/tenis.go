@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var waitGroup sync.WaitGroup
+
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
@@ -42,12 +44,17 @@ func updateWinner(player Player) {
 }
 
 func gameover() bool {
+	fmt.Println("BestPlayer:", bestPlayer.points, " PointSet:", pointSet)
 	return bestPlayer.points == pointSet
 }
 
-func move(player Player, court chan bool, waitGroup *sync.WaitGroup) {
+func move(player Player, court chan bool) {
+	
+	waitGroup.Done()
+
 	for true {
-		status := <-court
+		status := <- court
+
 		if !status { // não entra
 			fmt.Println("Status in exception: ", status)
 			return
@@ -55,17 +62,18 @@ func move(player Player, court chan bool, waitGroup *sync.WaitGroup) {
 
 		fmt.Println("Status: ", status)
 		fmt.Println("Player", player.id, "starting move")
+
 		if makePoint() == 1 {
 			player.points++
 			fmt.Println("Player", player.id, "Points: ", player.points)
+			updateWinner(player)
+			if gameover() { // não entra
+				fmt.Println("Closing the court channel...")
+				close(court)
+				return
+			}
 		} else {
 			fmt.Println("Player", player.id, "no point")
-		}
-		updateWinner(player)
-
-		if gameover() { // não entra
-			fmt.Println("Closing the court channel...")
-			close(court)
 		}
 		court <- true
 	}
@@ -73,23 +81,21 @@ func move(player Player, court chan bool, waitGroup *sync.WaitGroup) {
 }
 
 func main() {
-	var waitGroup sync.WaitGroup
+	
 	court := make(chan bool)
 
 	player01 := NewPlayer(1, 0)
 	player02 := NewPlayer(2, 0)
 
 	waitGroup.Add(2)
+
 	fmt.Println("Starting game")
-	go move(*player01, court, &waitGroup)
-	go move(*player02, court, &waitGroup)
+	go move(*player01, court)
+	go move(*player02, court)
+
 	court <- true
 
-	fmt.Println("Finishing channel", <-court)
-	for i := 0; i < 2; i++ {
-		waitGroup.Done()
-	}
-
 	waitGroup.Wait()
+
 	fmt.Println("Best player:", bestPlayer.id, " Points:", bestPlayer.points)
 }
