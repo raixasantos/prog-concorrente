@@ -9,17 +9,15 @@ import (
 
 var waitGroup sync.WaitGroup
 
+// runs before anything else in the package generating the seed
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func Random() int {
+// Generate a random number between 0 and 1 that represents a point
+func makePoint() int {
 	randomNumber := rand.Intn(2)
 	return randomNumber
-}
-
-func makePoint() int {
-	return Random()
 }
 
 // Player represents a player in a game.
@@ -35,6 +33,7 @@ func NewPlayer(id, points int) *Player {
 var bestPlayer Player
 var pointSet int = 7
 
+// Checks if the player have a better score and update the winner.
 func updateWinner(player Player) {
 	if player.points > bestPlayer.points {
 		bestPlayer.id = player.id
@@ -43,19 +42,21 @@ func updateWinner(player Player) {
 	fmt.Println("Updating best player:", bestPlayer.id, " Points:", bestPlayer.points)
 }
 
+// Checks if the game is over.
 func gameover() bool {
 	fmt.Println("BestPlayer:", bestPlayer.points, " PointSet:", pointSet)
 	return bestPlayer.points == pointSet
 }
 
+// Represents moves in a game from one player.
 func move(player Player, court chan bool) {
-	
+
 	waitGroup.Done()
 
 	for true {
-		status := <- court
+		status := <-court
 
-		if !status { // não entra
+		if !status {
 			fmt.Println("Status in exception: ", status)
 			return
 		}
@@ -67,7 +68,7 @@ func move(player Player, court chan bool) {
 			player.points++
 			fmt.Println("Player", player.id, "Points: ", player.points)
 			updateWinner(player)
-			if gameover() { // não entra
+			if gameover() {
 				fmt.Println("Closing the court channel...")
 				close(court)
 				return
@@ -80,8 +81,9 @@ func move(player Player, court chan bool) {
 
 }
 
+// Main method.
 func main() {
-	
+
 	court := make(chan bool)
 
 	player01 := NewPlayer(1, 0)
