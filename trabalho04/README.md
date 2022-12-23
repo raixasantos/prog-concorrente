@@ -7,7 +7,7 @@ ganhando o jogo o jogador que alcançar um número de pontos fixo P desse game.
 
 ## Ferramentas utilizadas
 
-As ferramentas utilizadas foram: 
+A ferramenta utilizada foi: 
 
 - Go 1.19.4
 
